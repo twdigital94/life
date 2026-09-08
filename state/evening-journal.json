@@ -1,0 +1,23 @@
+{
+  "_comment": "Ledger of Otter 'Evening journal' recordings already filed into Notion. The evening-journal skill reads this each run to avoid double-posting. Newest last.",
+  "filed": [
+    {
+      "otter_id": "AI_VRhwY3S6PNbJvqxymJ0xSCM0",
+      "recorded_pt": "2026/09/03 06:06:34",
+      "local_date": "2026-09-03",
+      "heading": "**Evening, Thursday 3 September**",
+      "year_page": "33f2072f-71a5-8088-97ac-f07ef4ea9101",
+      "filed_at": "2026-09-08T08:40:00+07:00",
+      "note": "Backfilled when the automation was set up."
+    },
+    {
+      "otter_id": "L8N8eFA2octILx-IduwYrRpkrW8",
+      "recorded_pt": "2026/09/07 06:24:53",
+      "local_date": "2026-09-07",
+      "heading": "**Evening, Monday 7 September**",
+      "year_page": "33f2072f-71a5-8088-97ac-f07ef4ea9101",
+      "filed_at": "2026-09-08T08:40:00+07:00",
+      "note": "Backfilled when the automation was set up."
+    }
+  ]
+}
