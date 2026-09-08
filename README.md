@@ -32,6 +32,15 @@ Day one of Health Freak Week, done and dusted. Feel really calm, really good...
 | Dates | [`scripts/journal_dates.py`](scripts/journal_dates.py) |
 | Ledger | [`state/evening-journal.json`](state/evening-journal.json) |
 
+### Setup, one manual step
+
+The Routine needs the **Notion** and **Otter_ai** connectors attached to it.
+They cannot be attached programmatically on this account, so add them once in
+the Routines UI on claude.ai (open *Evening journal to Notion*, add the two
+connectors). Without them the nightly session has no Notion or Otter tools and
+the run fails. Nothing is lost when it does, the recordings stay in Otter and
+the next good run picks them up.
+
 ### Skipped nights and doubles
 
 Every run looks back **4 days**, not just at last night. A skipped night is

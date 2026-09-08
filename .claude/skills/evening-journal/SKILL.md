@@ -103,13 +103,14 @@ cleaned prose**:
 - **Cut the noise.** Filler, false starts, repeated words, "um", verbal
   throat-clearing, and asides to the recorder ("test test 123", "hoping this is
   still recording", anything addressed to Claude or about the transcript itself).
-- **Fix transcription errors** where the intent is obvious. Otter mangles names,
-  Thai place names, and his own shorthand. Reliable fixes: "my tea" / "my tim" /
-  "my team" → "my T" (his tinnitus), "Jussie" / "Jessie" → "Jesse", "on the puss"
-  is correct as-is (drinking), "neg" is correct as-is (his verb for cutting
-  something out). Anything you are not confident about, leave **exactly as he
-  said it**. A slightly odd phrase in his journal is harmless; a confident wrong
-  guess quietly rewrites his memory of the day.
+- **Fix transcription errors** where the intent is obvious. Otter reliably
+  mangles people's names, Thai place names, supplement names, and his own
+  shorthand. Cross-check names against how they are spelled in earlier entries on
+  the journal page rather than going with Otter's spelling. Some NZ slang is
+  correct as transcribed and should be left alone.
+- **When unsure, leave it exactly as he said it.** A slightly odd phrase in his
+  journal is harmless. A confident wrong guess quietly rewrites his memory of the
+  day, which is the one thing this automation must never do.
 - **Do not invent.** Never add a thought he did not have. If a passage is too
   garbled to recover, leave it out rather than filling the gap.
 - **Paragraph it.** Three to six paragraphs, broken where his thinking turns.
