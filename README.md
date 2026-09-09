@@ -41,6 +41,17 @@ connectors). Without them the nightly session has no Notion or Otter tools and
 the run fails. Nothing is lost when it does, the recordings stay in Otter and
 the next good run picks them up.
 
+### Finding the recording
+
+Otter only uses the title "Evening journal" if Tim renamed it. When he doesn't,
+Otter invents its own title, and a title-only search reports "nothing to file"
+on a night he actually recorded. That happened on 8 September.
+
+So every run does two passes: one by title, one by **shape** (starts 18:00 to
+04:00 local, runs 3 to 40 minutes), then confirms from the transcript that it is
+Tim alone reflecting rather than a client call. Renaming the recording in Otter
+is still the most reliable path, but forgetting no longer costs an entry.
+
 ### Skipped nights and doubles
 
 Every run looks back **4 days**, not just at last night. A skipped night is

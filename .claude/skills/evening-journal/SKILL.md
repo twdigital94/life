@@ -55,11 +55,37 @@ still sitting in Otter.
 
 ### 3. Find candidate recordings
 
-Search Otter with `otter_search`, using `title_contains: "evening journal"` and
-the `created_after` / `created_before` dates from step 1. Do not pass a `query`,
-the title filter is what matters.
+**Never rely on the title alone.** Tim does not always rename the recording, and
+when he doesn't, Otter invents a title of its own ("Daily Reflection and Work
+Automation Plans"). A title-only search silently reports "nothing to file" on a
+night he actually recorded, which is the worst failure this automation has, so
+run **both** passes every time:
 
-For each result, compute the calendar day it belongs to:
+**Pass A, by title.** `otter_search` with `title_contains: "evening journal"` and
+the `created_after` / `created_before` dates from step 1. No `query`.
+
+**Pass B, by shape.** `otter_search` over the same date window with **no title
+filter** and `include_shared_meetings: false`, then keep only recordings that
+look like an evening journal:
+
+```bash
+python3 scripts/journal_dates.py classify "2026/09/08 06:19:52" "11m 57s"
+```
+
+The script applies the shape test: it starts in the evening local window (18:00
+to 04:00), and it runs between 3 and 40 minutes. Client calls and work notes sit
+outside that window or run far longer, so they fall out on their own.
+
+Union the two passes and de-duplicate by Otter ID.
+
+**Then confirm before writing.** A shape match is a candidate, not a verdict.
+Fetch the transcript and check it is Tim talking to himself: one speaker, first
+person, reflecting on his day. If there is a second speaker, or it reads like a
+client call, a meeting, or him narrating a work process, **skip it** and say in
+your report that you skipped it and why. Never file a client conversation into
+his personal journal.
+
+For each surviving result, compute the calendar day it belongs to:
 
 ```bash
 python3 scripts/journal_dates.py heading "2026/09/07 06:24:53"

@@ -18,6 +18,15 @@
       "year_page": "33f2072f-71a5-8088-97ac-f07ef4ea9101",
       "filed_at": "2026-09-08T08:40:00+07:00",
       "note": "Backfilled when the automation was set up."
+    },
+    {
+      "otter_id": "sL7uYbp2KEWGQYkJpw76B_CvZiM",
+      "recorded_pt": "2026/09/08 06:19:52",
+      "local_date": "2026-09-08",
+      "heading": "**Evening, Tuesday 8 September**",
+      "year_page": "33f2072f-71a5-8088-97ac-f07ef4ea9101",
+      "filed_at": "2026-09-09T12:20:00+07:00",
+      "note": "Otter auto-titled this 'Daily Reflection and Work Automation Plans', so the title-only search missed it. Found by shape and filed by hand; the skill now runs a shape pass too."
     }
   ]
 }
