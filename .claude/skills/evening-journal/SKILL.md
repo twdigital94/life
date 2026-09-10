@@ -6,8 +6,11 @@ description: Pull Tim's "Evening journal" voice recordings from Otter.ai and fil
 # Evening journal to Notion
 
 Tim records a spoken journal most evenings, lying down away from screens, into
-Otter.ai under the title **Evening journal**. This skill moves those recordings
-into his written journal in Notion so he has one continuous document.
+Otter.ai. This skill moves those recordings into his written journal in Notion so
+he has one continuous document.
+
+He often titles the recording "Evening journal", but **the title is not how it is
+found** and must not be relied on. See step 3.
 
 He may skip nights. He may record late. Neither is a problem: this skill looks
 back over several days every run and files anything that is missing, so a
@@ -19,7 +22,8 @@ skipped night is simply skipped and a late one gets picked up the next run.
 |---|---|
 | Home timezone | `Asia/Bangkok` (UTC+7) |
 | Otter reports times in | US Pacific (`America/Los_Angeles`) |
-| Otter recording title | `Evening journal` |
+| How the journal is identified | By shape, never by title (step 3) |
+| Evening window | 18:00 to 04:00 local, 3 to 40 minutes |
 | Journal index page | `33f2072f-71a5-8068-9cbd-d0122fdf7a97` ("Journalling, Reflecting, Planning, Writing") |
 | Lookback window | 4 days |
 | State file | `state/evening-journal.json` |
@@ -55,28 +59,32 @@ still sitting in Otter.
 
 ### 3. Find candidate recordings
 
-**Never rely on the title alone.** Tim does not always rename the recording, and
-when he doesn't, Otter invents a title of its own ("Daily Reflection and Work
-Automation Plans"). A title-only search silently reports "nothing to file" on a
-night he actually recorded, which is the worst failure this automation has, so
-run **both** passes every time:
+**Do not search by title.** `title_contains` cannot be trusted here, for two
+separate reasons, both of which have already caused a missed night:
 
-**Pass A, by title.** `otter_search` with `title_contains: "evening journal"` and
-the `created_after` / `created_before` dates from step 1. No `query`.
+1. Tim does not always rename the recording, and Otter then invents a title of
+   its own ("Daily Reflection and Work Automation Plans").
+2. Otter's title index lags. On 9 September a recording titled exactly
+   "Evening journal" was **not** returned by `title_contains: "evening journal"`
+   even with no date filter at all, while a plain listing returned it fine.
 
-**Pass B, by shape.** `otter_search` over the same date window with **no title
-filter** and `include_shared_meetings: false`, then keep only recordings that
-look like an evening journal:
+So a title search can miss a correctly named recording. Do not use one, not even
+as a first pass. It is not a shortcut, it is the failure mode.
+
+**Instead, list and classify.** One `otter_search` over the window from step 1,
+with **no `title_contains` and no `query`**, and `include_shared_meetings: false`.
+Set `page_size: 25` and page through if there is a `next_cursor`. Then test each
+result:
 
 ```bash
-python3 scripts/journal_dates.py classify "2026/09/08 06:19:52" "11m 57s"
+python3 scripts/journal_dates.py classify "2026/09/09 06:24:24" "8m 18s"
 ```
 
-The script applies the shape test: it starts in the evening local window (18:00
-to 04:00), and it runs between 3 and 40 minutes. Client calls and work notes sit
-outside that window or run far longer, so they fall out on their own.
-
-Union the two passes and de-duplicate by Otter ID.
+The shape test keeps recordings that start in the evening local window (18:00 to
+04:00) and run 3 to 40 minutes. Client calls and work notes sit outside that
+window or run far longer, so they drop out on their own. A title of "Evening
+journal" is a helpful confirmation when it happens to be there, but it is never
+what you search on.
 
 **Then confirm before writing.** A shape match is a candidate, not a verdict.
 Fetch the transcript and check it is Tim talking to himself: one speaker, first
@@ -88,11 +96,11 @@ his personal journal.
 For each surviving result, compute the calendar day it belongs to:
 
 ```bash
-python3 scripts/journal_dates.py heading "2026/09/07 06:24:53"
+python3 scripts/journal_dates.py heading "2026/09/09 06:24:24"
 ```
 
 This converts the Otter timestamp from US Pacific into the home timezone and
-prints the entry heading, e.g. `**Evening, Monday 7 September**`. Recordings
+prints the entry heading, e.g. `**Evening, Wednesday 9 September**`. Recordings
 made just after midnight still belong to the evening that just ended, so the
 script rolls any recording before 04:00 local back to the previous day.
 

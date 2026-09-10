@@ -22,6 +22,10 @@ HOME_TZ = ZoneInfo("Asia/Bangkok")   # Tim's current base. Update when he moves.
 OTTER_TZ = ZoneInfo("America/Los_Angeles")  # What Otter reports times in.
 
 LOOKBACK_DAYS = 4        # How far back each run checks, to catch late/missed nights.
+# created_before is inclusive, so today's date already covers tonight. One day of
+# pad is cheap insurance against Pacific/local date-boundary edges. Dedupe makes
+# an over-wide window free; an over-narrow one silently loses an entry.
+END_PAD_DAYS = 1
 EVENING_ROLLBACK_HOUR = 4  # A recording before this hour belongs to the previous evening.
 
 # Shape test for spotting a journal Otter has auto-titled something else.
@@ -53,8 +57,9 @@ def heading(day) -> str:
 def cmd_now():
     local = datetime.now(HOME_TZ)
     # Otter filters on its own Pacific dates, so give the window in those terms.
-    end_pt = local.astimezone(OTTER_TZ)
-    start_pt = end_pt - timedelta(days=LOOKBACK_DAYS)
+    now_pt = local.astimezone(OTTER_TZ)
+    start_pt = now_pt - timedelta(days=LOOKBACK_DAYS)
+    end_pt = now_pt + timedelta(days=END_PAD_DAYS)  # exclusive bound, so pad it
     print(f"local_now        {local:%Y-%m-%d %H:%M:%S %Z}")
     print(f"local_today      {local:%Y-%m-%d} ({local:%A})")
     print(f"otter_created_after   {start_pt:%Y/%m/%d}")

@@ -43,14 +43,21 @@ the next good run picks them up.
 
 ### Finding the recording
 
-Otter only uses the title "Evening journal" if Tim renamed it. When he doesn't,
-Otter invents its own title, and a title-only search reports "nothing to file"
-on a night he actually recorded. That happened on 8 September.
+The automation does **not** search Otter by title. It lists every recording in
+the window and picks the journal out by shape: starts 18:00 to 04:00 local, runs
+3 to 40 minutes, one speaker, reads as Tim reflecting rather than a client call.
 
-So every run does two passes: one by title, one by **shape** (starts 18:00 to
-04:00 local, runs 3 to 40 minutes), then confirms from the transcript that it is
-Tim alone reflecting rather than a client call. Renaming the recording in Otter
-is still the most reliable path, but forgetting no longer costs an entry.
+Two separate things make a title search unreliable, and each has already cost a
+night:
+
+- **8 Sep:** the recording was not renamed, so Otter auto-titled it "Daily
+  Reflection and Work Automation Plans" and a title search found nothing.
+- **9 Sep:** the recording *was* titled "Evening journal", and a title search
+  still did not return it. Otter's title index lags behind. A plain listing found
+  it immediately.
+
+So naming it "Evening journal" is nice but changes nothing mechanically. The
+shape test is what actually finds it.
 
 ### Skipped nights and doubles
 
