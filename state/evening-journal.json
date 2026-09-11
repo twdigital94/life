@@ -1,5 +1,5 @@
 {
-  "_comment": "Ledger of Otter 'Evening journal' recordings already filed into Notion. The evening-journal skill reads this each run to avoid double-posting. Newest last.",
+  "_comment": "Ledger for MANUAL runs only. The nightly Routine does not write here and dedupes against the Notion page instead, so this can lag. Notion is the record.",
   "filed": [
     {
       "otter_id": "AI_VRhwY3S6PNbJvqxymJ0xSCM0",
@@ -36,6 +36,15 @@
       "year_page": "33f2072f-71a5-8088-97ac-f07ef4ea9101",
       "filed_at": "2026-09-10T08:00:00+07:00",
       "note": "Titled 'Evening journal' correctly, but Otter's title index did not return it, so the nightly run missed it. Filed by hand; the skill no longer searches by title at all."
+    },
+    {
+      "otter_id": "Gxm5Ht4tDo1SldOIU0ernvHP6N8",
+      "recorded_pt": "2026/09/10 06:44:22",
+      "local_date": "2026-09-10",
+      "heading": "**Evening, Thursday 10 September**",
+      "year_page": "33f2072f-71a5-8088-97ac-f07ef4ea9101",
+      "filed_at": "2026-09-11T08:05:00+07:00",
+      "note": "Titled correctly. Nightly run found nothing, and a diagnostic run handed this exact ID still filed nothing. Filed by hand. Routine rebuilt to be self-contained after this."
     }
   ]
 }

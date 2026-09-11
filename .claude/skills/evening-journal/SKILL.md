@@ -5,6 +5,11 @@ description: Pull Tim's "Evening journal" voice recordings from Otter.ai and fil
 
 # Evening journal to Notion
 
+> **The nightly Routine does not use this file.** Its instructions are stored in
+> the Routine prompt itself, because the scheduled run cannot be relied on to
+> have this repo. This file is for running the job by hand. Keep the two in step:
+> if you change the method here, change the Routine prompt as well.
+
 Tim records a spoken journal most evenings, lying down away from screens, into
 Otter.ai. This skill moves those recordings into his written journal in Notion so
 he has one continuous document.
@@ -108,13 +113,11 @@ script rolls any recording before 04:00 local back to the previous day.
 
 An entry is already filed if **either** check trips:
 
-- Its Otter ID appears in `state/evening-journal.json`.
-- Its heading already appears in the year page's content.
-
-The state file is the fast path; the page check is the backstop for when state
-and reality drift apart (a manual edit, a lost commit). Check both. Never write
-an entry twice, and if the two disagree, trust the Notion page and repair the
-state file.
+- Its heading already appears in the year page's content. **This is the check
+  that matters.** Notion is the record.
+- Its Otter ID appears in `state/evening-journal.json`. This ledger is a
+  convenience for manual runs only and may be out of date, since the nightly
+  Routine does not write to it. If the two disagree, trust Notion.
 
 To check the page without pulling 350k characters into context, fetch it and
 slice the saved file:

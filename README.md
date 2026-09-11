@@ -28,18 +28,28 @@ Day one of Health Freak Week, done and dusted. Feel really calm, really good...
 | Schedule | 00:13 Asia/Bangkok, nightly (`13 17 * * *` UTC) |
 | Source | Otter.ai recordings titled "Evening journal" |
 | Destination | Notion, current year's page under *Life / Journalling, Reflecting, Planning, Writing* |
-| Logic | [`.claude/skills/evening-journal/SKILL.md`](.claude/skills/evening-journal/SKILL.md) |
-| Dates | [`scripts/journal_dates.py`](scripts/journal_dates.py) |
-| Ledger | [`state/evening-journal.json`](state/evening-journal.json) |
+| Logic | The Routine prompt (self-contained). [`SKILL.md`](.claude/skills/evening-journal/SKILL.md) mirrors it for manual runs |
+| Dates | [`scripts/journal_dates.py`](scripts/journal_dates.py), manual runs only |
+| Dedupe | The headings on the Notion page. No ledger |
 
-### Setup, one manual step
+### Where the instructions actually live
 
-The Routine needs the **Notion** and **Otter_ai** connectors attached to it.
-They cannot be attached programmatically on this account, so add them once in
-the Routines UI on claude.ai (open *Evening journal to Notion*, add the two
-connectors). Without them the nightly session has no Notion or Otter tools and
-the run fails. Nothing is lost when it does, the recordings stay in Otter and
-the next good run picks them up.
+**The nightly Routine is self-contained.** Its full instructions are stored in
+the Routine prompt itself, not in this repo. It does not read the skill file, run
+the script, or write a ledger, and it does not need the repo cloned at all.
+
+That is deliberate. For four nights the automation never filed a single entry,
+including a run handed the exact recording and told to file it. Every entry in
+the journal was put there by hand. The common factor was that the run depended on
+reading instructions out of this repo and pushing a commit back. Removing that
+dependency removes the whole class of failure.
+
+**Notion is the only record.** Deduplication is a check for the heading on the
+year page. There is no ledger to keep in sync, and nothing to commit.
+
+The skill in `.claude/skills/evening-journal/` is still here for running the job
+by hand in a session that does have the repo. If you change how the job works,
+change the Routine prompt too, or they will drift apart.
 
 ### Finding the recording
 
@@ -52,9 +62,9 @@ night:
 
 - **8 Sep:** the recording was not renamed, so Otter auto-titled it "Daily
   Reflection and Work Automation Plans" and a title search found nothing.
-- **9 Sep:** the recording *was* titled "Evening journal", and a title search
-  still did not return it. Otter's title index lags behind. A plain listing found
-  it immediately.
+- **9 and 10 Sep:** the recordings *were* titled "Evening journal", and a title
+  search still did not return them that night. Otter's title index lags by hours.
+  By the next morning it had caught up, which is what made this so confusing.
 
 So naming it "Evening journal" is nice but changes nothing mechanically. The
 shape test is what actually finds it.
