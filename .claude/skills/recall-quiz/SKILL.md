@@ -1,9 +1,9 @@
 ---
 name: recall-quiz
-description: Build Tim's next "Second Pass" quiz round from his own Notion notes (Marketing Insights, book highlights, Life Insights, Learning Thai) and load it into his quiz page, with spaced repetition so missed ideas come back in 2 days and then a week. Runs every second morning via a scheduled Routine, but use it by hand whenever Tim says "quiz me", "new quiz round", "make me a quiz", "test me on my notes", "what did I get wrong last time", "change my Thai task", or asks about his recall quiz, Second Pass, spaced repetition on his notes, or remembering what he reads and listens to. Also use it when he asks to add a new note source to the quiz or to change how it works.
+description: Build Tim's next "The Great Hardwiring" quiz round from his own Notion notes (Marketing Insights, book highlights, Life Insights, Learning Thai) and load it into his quiz page, with spaced repetition so missed ideas come back in 2 days and then a week. Runs every second morning via a scheduled Routine, but use it by hand whenever Tim says "quiz me", "new quiz round", "make me a quiz", "test me on my notes", "what did I get wrong last time", "change my Thai task", or asks about his recall quiz, The Great Hardwiring, spaced repetition on his notes, or remembering what he reads and listens to. Also use it when he asks to add a new note source to the quiz or to change how it works.
 ---
 
-# Second Pass: recall quiz from Tim's notes
+# The Great Hardwiring: recall quiz from Tim's notes
 
 > **The scheduled Routine carries its own copy of these instructions** in its
 > prompt, so it does not depend on this repo being cloned. If you change the
@@ -19,11 +19,11 @@ Missed ideas come back soon, known ideas drift further out.
 
 | Piece | Where |
 |---|---|
-| Quiz page | https://claude.ai/artifact/7gyNY5a7bgoMmCxtPJpX15 ("Second Pass") |
+| Quiz page | https://claude.ai/artifact/7gyNY5a7bgoMmCxtPJpX15 ("The Great Hardwiring") |
 | Page source | `.claude/skills/recall-quiz/assets/second-pass.html` |
 | Page data | The page's own database, read and written with the `ArtifactData` tool |
 | Example round | `.claude/skills/recall-quiz/references/example-round.json` (round 1) |
-| Schedule | Routine "Second Pass quiz round", every second day at 06:52 Asia/Bangkok. Needs the Notion connector attached in the Routines UI |
+| Schedule | Routine "The Great Hardwiring", every second day at 06:52 Asia/Bangkok. Needs the Notion connector attached in the Routines UI |
 | Timezone | Asia/Bangkok. Change here and in the Routine cron if Tim moves |
 
 **The page is the engine; you only write data.** It renders whatever round
@@ -262,6 +262,6 @@ table in step 4 and to the Routine prompt.
 
 ## Keeping the Routine in step
 
-The Routine's prompt is this file's body from "Second Pass: recall quiz" down,
+The Routine's prompt is this file's body from "The Great Hardwiring: recall quiz" down,
 pasted in full. After editing this file, update the Routine prompt the same way
 (`update_trigger` with the new text), or the two will drift.
