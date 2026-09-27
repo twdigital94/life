@@ -114,7 +114,7 @@ already went through.
 ## The Great Hardwiring (recall quiz)
 
 Tim takes notes from books, podcasts and newsletters and rarely goes back to
-them. **The Great Hardwiring** is a 10 minute quiz every second morning, built from those
+them. **The Great Hardwiring** is a 15 minute quiz every second morning, built from those
 notes, so the ideas actually stick. Missed ideas come back in 2 days, then a
 week, then further out. The last few questions are Thai, plus a small Thai task
 for the week out in the real world.
@@ -122,7 +122,7 @@ for the week out in the real world.
 | | |
 |---|---|
 | Quiz page | https://claude.ai/artifact/7gyNY5a7bgoMmCxtPJpX15 |
-| Schedule | Every second day, 06:52 Asia/Bangkok (Routine "The Great Hardwiring") |
+| Schedule | 06:52 Asia/Bangkok on even-numbered dates, roughly every second day (Routine "The Great Hardwiring") |
 | Sources | Marketing Insights, Books, Life Insights (+ emails), Learning Thai, Thai Language School |
 | Logic | The Routine prompt (self-contained). [`SKILL.md`](.claude/skills/recall-quiz/SKILL.md) mirrors it for manual runs |
 | Page | [`second-pass.html`](.claude/skills/recall-quiz/assets/second-pass.html), published once |

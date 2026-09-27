@@ -10,10 +10,15 @@ description: Build Tim's next "The Great Hardwiring" quiz round from his own Not
 > method here, update the Routine prompt too (see "Keeping the Routine in step").
 
 Tim takes a lot of notes from books, podcasts, newsletters and emails, and almost
-never revisits them. This skill turns those notes into a 10 minute quiz every
+never revisits them. This skill turns those notes into a 15 minute quiz every
 couple of days. The point is not to test him, it is to **get him thinking**:
 recall the idea, connect it to other ideas, and apply it to his work and life.
 Missed ideas come back soon, known ideas drift further out.
+
+It is about **ideas, not attribution**. Never ask who said something. And it is
+about his **whole life**, not just work: marketing and business are a big part,
+but so are mindset, psychology, spirituality, health and fitness, money,
+relationships, music and anything else he finds interesting.
 
 ## How it fits together
 
@@ -23,7 +28,7 @@ Missed ideas come back soon, known ideas drift further out.
 | Page source | `.claude/skills/recall-quiz/assets/second-pass.html` |
 | Page data | The page's own database, read and written with the `ArtifactData` tool |
 | Example round | `.claude/skills/recall-quiz/references/example-round.json` (round 1) |
-| Schedule | Routine "The Great Hardwiring", every second day at 06:52 Asia/Bangkok. Needs the Notion connector attached in the Routines UI |
+| Schedule | Routine "The Great Hardwiring", 06:52 Asia/Bangkok on even-numbered dates (roughly every second day). Needs the Notion connector attached in the Routines UI |
 | Timezone | Asia/Bangkok. Change here and in the Routine cron if Tim moves |
 
 **The page is the engine; you only write data.** It renders whatever round
@@ -37,11 +42,13 @@ Notion, writes one new round document and moves the pointer.
 |---|---|---|
 | `meta/current` | you | `{roundId, number, updatedAt}`, the round the page shows |
 | `rounds/<YYYY-MM-DD>` | you | The whole round (schema below) |
-| `results/<roundId>` | page | `{roundId, startedAt, finishedAt?, answers:[{qid, type, section, rating, response, ideaIds, coach?, at}]}` |
+| `results/<roundId>` | page | `{roundId, number, startedAt, finishedAt?, score?, counts?, answers:[{qid, type, section, rating, response, ideaIds, coach?, explore?:[{q, a}], at}]}` |
+| `feedback/<roundId>` | page | `{roundId, number, text, updatedAt}`, Tim's own feedback on that round |
 | `ideas/<ideaId>` | page | `{id, title, note, source, url, section, box, due, lastSeen, history:[{d, r, q}]}` |
 | `thai/<taskId>` | page | `{id, done, note, updatedAt}`, how the weekly Thai task went |
 
-Ratings are `got`, `shaky`, `missed`. The page schedules each idea: missed comes
+Ratings are `got`, `shaky`, `missed`, or `skipped` (not scored, not
+scheduled). `score` is got 1, shaky 0.5, out of the rated questions. The page schedules each idea: missed comes
 back in **2 days**, a first "got it" in **7 days**, then 16, 35, 90. Shaky comes
 back in about half the current gap (minimum 2 days). Never write to `ideas/` or
 `results/` yourself; that is the page's job and two writers would clash.
@@ -83,12 +90,21 @@ With `ArtifactData` on the page URL:
 - `list` `thai` for how the recent Thai tasks went.
 - `list` `rounds` (limit 10 is enough) to see recent quotes and question types
   so you don't repeat them.
+- `list` `feedback`. **Read all of it and act on it.** This is Tim telling you
+  what he wants more or less of. The newest feedback wins where it conflicts,
+  and it overrides the defaults in this file (question counts, balance, styles),
+  but not the database rules. If he asks for something the page can't do, do
+  what you can in the content and mention it in your report.
 
-From that, build three lists:
+From that, build these lists:
 
 - **Due**: ideas with `due <= today`. Missed first, then oldest due.
-- **Unanswered**: ideas from the last round's questions that have no answer in
-  its results. He skipped them, so treat them as due.
+- **Unanswered**: ideas from the last round's questions that have no answer,
+  or were `skipped`. Treat them as due, but if he skipped the same idea twice,
+  drop it for a few weeks.
+- **Curious**: the `explore` threads in recent results. When he digs deeper on
+  something he is interested in it. Good material for a later question that
+  pushes the same thread further.
 - **Seen**: every idea id in `ideas`. Anything not in here is new.
 
 If he did not touch the last round at all, keep this round light (the due and
@@ -96,16 +112,21 @@ unanswered ideas plus a couple of new ones) rather than piling on.
 
 ### 3. Pick the ideas
 
-Aim for **8 or 9 idea questions** plus **3 or 4 Thai questions**. That is about
-10 minutes. Mix:
+Aim for **15 idea questions** plus **3 or 4 Thai questions**, about 15
+minutes. Mix:
 
-- **Reviews (up to 4)**: from Due and Unanswered. Ask about the same idea from a
+- **Reviews (up to 6)**: from Due and Unanswered. Ask about the same idea from a
   **different angle and question type** than last time (the idea's `history`
   shows the type used). If he missed a recall question, try a scenario or a
   match; if he got an MCQ, make him produce it himself this time. The idea keeps
   its id, so the page carries its schedule on.
-- **New (4 to 6)**: ideas not yet seen. Spread across Marketing Insights, Books
-  and Life Insights where possible. Favour notes added in the last couple of
+- **New (9 to 12)**: ideas not yet seen. Spread across Marketing Insights, Books
+  and Life Insights. **Balance the round across his life**: roughly half
+  work, marketing and business, half everything else (mindset and psychology,
+  spirituality and meaning, health and fitness, money, relationships, music,
+  general ideas). The notes lean marketing today; pull the life ideas out of
+  Naval, Life Insights, the emails, JL Collins, Unreasonable Hospitality and
+  the life-leaning parts of every book. Favour notes added in the last couple of
   weeks, because seeing fresh notes come back quickly is what will keep him
   taking notes. Read one or two book pages properly each run rather than
   skimming them all; rotate books over time.
@@ -113,11 +134,13 @@ Aim for **8 or 9 idea questions** plus **3 or 4 Thai questions**. That is about
   sources side by side (Hormozi's "price is a signal" next to Alchemy's
   "reassuringly expensive" aspirin; Guidara's 5% next to Sutherland's 20% more
   enjoyable). This is where the best thinking happens.
-- **One or two "apply it" long answers**, never more. One about his work (he
-  runs TWdigital, a small digital marketing agency, with clients like Carrick
-  Winery, Croplands, Coolshrub and Calm Mind Rebellion), and/or one about his
-  life (he lives in Chiang Mai, is into breathwork, journalling and fitness,
-  and wants to meet new people).
+- **Two or three "apply it" long answers**, never more, never back to back.
+  Make them about **Tim himself**: his own business TWdigital (a small digital
+  marketing agency he runs solo: his offers, pricing, content, getting
+  clients, how he works), or his life (he lives in Chiang Mai, is into
+  breathwork, meditation, journalling, the gym and guitar, and wants to meet new
+  people). Don't ask what he'd do with a client's budget; he doesn't control
+  those.
 
 Where Tim wrote his own reaction to a highlight (italics in book notes, yellow
 highlights in Life Insights), put it in `yourNote` so he sees what he thought
@@ -129,16 +152,16 @@ Question types the page supports:
 
 | `type` | Use it for | Fields |
 |---|---|---|
-| `mcq` | Quick recall, "who said it", scenario judgement | `options` (3 or 4), `correct` (index) |
+| `mcq` | Quick recall, predictions, scenario judgement, odd one out | `options` (3 or 4), `correct` (index) |
 | `short` | Recall from memory in a sentence | `answer` |
 | `long` | Apply it to work or life. No right answer | `answer` (the idea, restated), optional `scenario` |
 | `cloze` | One missing word or phrase. Put `___` in `prompt` | `answer`, `accept` (other spellings) |
-| `match` | 4 or 5 pairs: quote to author, idea to example, Thai to English | `pairs` [[left, right], ...] |
+| `match` | 4 or 5 pairs: idea to real-life example, concept to what it means, cause to effect, Thai to English. Never quote to author | `pairs` [[left, right], ...] |
 | `order` | A real sequence: a playbook, a process, steps in a story | `items` in the correct order (page shuffles) |
 
 Every question also has: `kind: "q"`, a unique `id` within the round (`q1`...,
 Thai `t1`...), `section` (`ideas` or `thai`), a short `label` eyebrow ("Recall",
-"Apply it · your work", "Who said it", "Two books, one move"), `ideas` (list of
+"Apply it · your business", "Apply it · your life", "Two ideas, one move"), `ideas` (list of
 `{id, title, note, source, url}`), `prompt`, and `explain` (shown after
 answering). Optional: `scenario`, `yourNote`, `thai` (Thai script shown with the
 question), `speak` (Thai script revealed only after answering, with a play
@@ -153,10 +176,13 @@ is the Notion page link.
 
 Writing well:
 
-- **Vary the angle.** Don't make every question "what did X say about Y". Use
-  scenarios from his real work ("A Croplands lead has been on three calls and
-  still hasn't bought. Which of Hormozi's two problems is it?"), predictions
-  ("what happened to close rates?"), odd-one-out, and "which idea explains this".
+- **Vary the angle and the format.** He likes the interactive ones (match,
+  order, fill the gap), so use plenty and keep mixing. Don't make every question
+  "what did X say about Y". Use scenarios from his own life and business ("A
+  lead has been on three calls with you and still hasn't bought. Which of the
+  two problems is it?"), predictions ("what happened to close rates?"),
+  odd-one-out, and "which idea explains this". Naming the source in the eyebrow
+  is fine; asking him to recall it is not.
 - **Plausible wrong answers.** The best distractors are other real ideas from
   his notes, so even the wrong options teach something. Say so in `explain`.
 - **Keep it in his words and at his level.** Plain NZ English, no jargon he
@@ -177,7 +203,14 @@ Don't reuse a quote from the last five rounds.
 
 ### 6. Thai section
 
-Always last. 3 or 4 questions drawn from his Learning Thai and Thai Language
+Always last. **Start the Thai section with the week's phrase** (the one in
+`thaiTask.phrase`), with its Thai script in `thai` or `speak` so he can hear
+it. Bring it back every round that week, each time with a small variation that
+stays close to the original: the same phrase in a new situation, a natural
+reply to it, or one word swapped (chok dee na krab, then chok dee na, pop gan
+mai, then "see you tomorrow"). Tim loved hearing it, so the audio matters.
+
+Then 3 or 4 more questions drawn from his Learning Thai and Thai Language
 School notes, **only on things already in his notes**: he wants to confirm he
 knows it, not learn new material in the quiz. Include any Thai ideas that are
 due. Mix match, cloze, MCQ and short "how do you say" questions. Add Thai
@@ -215,7 +248,7 @@ minute or two of talking.
   "dateLabel": "Tue 29 Sep",
   "headline": "A short, specific title for the round's theme",
   "intro": "One or two sentences on what's in it, e.g. how many are coming back.",
-  "minutes": 10,
+  "minutes": 15,
   "nextRound": "Thursday morning",
   "items": [ ...questions and quotes in the order he'll see them... ],
   "thaiTask": { ... }

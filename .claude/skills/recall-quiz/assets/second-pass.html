@@ -154,6 +154,25 @@ h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:up
 .reflect q{font-family:var(--serif);font-size:17px;quotes:none}
 .reflect p{margin:0;white-space:pre-wrap}
 .empty{text-align:center;color:var(--ink-soft)}
+.bar span.r-skipped{background:transparent;border:1px dashed var(--ink-faint)}
+.qfoot{display:flex;justify-content:flex-end}
+.linkbtn{background:none;border:0;color:var(--ink-faint);font-size:14px;text-decoration:underline;text-underline-offset:3px;padding:4px 0}
+.linkbtn:hover{color:var(--ink)}
+.dig{display:flex;flex-direction:column;gap:8px;border:1.5px dashed var(--rule);border-radius:10px;padding:12px}
+.dig .row input{flex:1;min-width:0}
+.dig-q{font-weight:700;font-size:15px}
+.dig-a{white-space:pre-wrap;font-size:15px}
+.score{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.score .big{font-family:var(--serif);font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.score .delta{font-family:var(--mono);font-size:13px}
+.delta.up{color:var(--got)}.delta.down{color:var(--miss)}.delta.flat{color:var(--ink-faint)}
+.hist{display:flex;flex-direction:column;gap:6px}
+.hist .hrow{display:grid;grid-template-columns:88px 1fr 44px;gap:10px;align-items:center;font-size:13px;font-family:var(--mono);color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.hist .track{height:10px;border-radius:5px;background:var(--rule);overflow:hidden}
+.hist .fill{height:100%;background:var(--ink-faint);border-radius:5px}
+.hist .hrow.now{color:var(--ink);font-weight:600}
+.hist .hrow.now .fill{background:var(--teal)}
+.hist .pct{text-align:right}
 .toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:999px;font-size:14px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -253,7 +272,7 @@ function renderIntro(){
 function firstUnanswered(){for(var k=0;k<S.round.items.length;k++){var it=S.round.items[k];if(it.kind==="q"&&!answerFor(it.id))return k;}return S.round.items.length}
 function go(idx){
   S.i=idx;
-  if(idx>=S.round.items.length){renderSummary();return}
+  if(idx>=S.round.items.length){if(S.results.finishedAt||S.practice)renderSummary();else renderSubmit();return}
   var it=S.round.items[idx];
   if(it.kind==="q"&&answerFor(it.id)&&!S.practice){go(idx+1);return}
   drawBar();
@@ -282,6 +301,8 @@ function renderQuestion(q){
   if(q.thai){var tr=h("div",{class:"row"},h("span",{class:"thaiscript",lang:"th",text:q.thai}),speakBtn(q.speak||q.thai));card.append(tr)}
   var body=h("div");card.append(body);
   ({mcq:mcq,short:freeText,long:freeText,cloze:cloze,match:match,order:order}[q.type]||freeText)(st,body);
+  st.foot=h("div",{class:"qfoot"},h("button",{class:"linkbtn",type:"button",onclick:function(){commit(st,"skipped")}},"Skip this one"));
+  card.append(st.foot);
   return card;
 }
 
@@ -332,10 +353,10 @@ function match(st,body){
   var q=st.q,left=shuffle(q.pairs.map(function(p,i){return {t:p[0],i:i}})),right=shuffle(q.pairs.map(function(p,i){return {t:p[1],i:i}}));
   var sel=null,mistakes=0,done=0;
   var grid=h("div",{class:"match"}),L=h("div",{class:"col"}),R=h("div",{class:"col"});
-  function mk(x,side){var b=h("button",{class:"chip",type:"button",lang:x.lang||null,onclick:function(){
+  function mk(x,side){var b=h("button",{class:"chip",type:"button",lang:x.lang||null,onanimationend:function(){b.classList.remove("bad")},onclick:function(){
     if(b.classList.contains("done"))return;
     if(!sel||sel.side===side){if(sel)sel.el.classList.remove("sel");sel={el:b,side:side,i:x.i};b.classList.add("sel");return}
-    if(sel.i===x.i){b.classList.add("done");sel.el.classList.remove("sel");sel.el.classList.add("done");b.disabled=true;sel.el.disabled=true;sel=null;done++;
+    if(sel.i===x.i){b.classList.remove("bad");sel.el.classList.remove("bad");b.classList.add("done");sel.el.classList.remove("sel");sel.el.classList.add("done");b.disabled=true;sel.el.disabled=true;sel=null;done++;
       if(done===q.pairs.length){st.response=mistakes+" slip"+(mistakes===1?"":"s");reveal(st,mistakes===0?"got":mistakes<=2?"shaky":"missed",mistakes===0?"Clean sweep.":mistakes+" wrong pairing"+(mistakes===1?"":"s")+" on the way.")}}
     else{mistakes++;[b,sel.el].forEach(function(el){el.classList.remove("bad");void el.offsetWidth;el.classList.add("bad")});sel.el.classList.remove("sel");sel=null}
   }},x.t);return b}
@@ -375,8 +396,9 @@ function reveal(st,suggest,verdict){
   var links=(q.ideas||[]).filter(function(i){return i.url});
   if(links.length)r.append(h("div",{class:"srcs"},links.map(function(i){return h("a",{href:i.url,target:"_blank",rel:"noopener"},"Open "+(i.note||i.title||"note"))})));
   if((q.type==="long"||q.type==="short")&&st.response&&S.sample)r.append(coachBlock(st));
+  if(S.sample)r.append(digBlock(st));
   r.append(rateBlock(st));
-  st.card.append(r);
+  st.card.insertBefore(r,st.foot);
   r.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 function coachBlock(st){
@@ -390,6 +412,28 @@ function coachBlock(st){
       .catch(function(e){b.disabled=false;b.textContent="Ask Claude again";out.textContent=e&&e.code==="rate_limited"?"Claude's busy. Try again in a minute.":e&&e.code==="not_granted"?"Claude feedback is switched off for this page.":"Couldn't get feedback this time.";if(e&&e.text)out.textContent=e.text});
   }},"Get Claude's take on my answer");
   wrap.append(b,out);return wrap;
+}
+function digBlock(st){
+  var q=st.q,wrap=h("div",{class:"dig"}),log=h("div",{class:"opts"});
+  var inp=h("input",{type:"text",id:"dig-"+q.id,placeholder:q.section==="thai"?"e.g. what does 'eek' mean on its own?":"Ask anything about this idea"});
+  var b=h("button",{class:"btn small",type:"button",onclick:ask},"Ask");
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter")ask()});
+  st.explore=st.explore||[];
+  function ask(){
+    var question=inp.value.trim();if(!question||b.disabled)return;
+    b.disabled=true;inp.value="";
+    var out=h("div",{class:"dig-a",text:"Thinking…"});
+    log.append(h("div",{class:"dig-q",text:question}),out);
+    var prior=st.explore.map(function(x){return "Q: "+x.q+"\nA: "+x.a}).join("\n\n");
+    var p="Tim, a New Zealander living in Chiang Mai, is quizzing himself on his own notes and wants to explore an idea further. Answer his question directly in plain, friendly NZ English, 3 to 6 short sentences, no headings, no em dashes. Use your own general knowledge; you cannot browse, so if you are not sure of something, say so plainly rather than guessing. "+
+      (q.section==="thai"?"This is about the Thai language and his level is basic: give the romanisation he would use, the Thai script, the tone in plain words (rising, falling, mid), and one short example of it in use at a shop or stall. ":"If it helps, give one concrete example from everyday life or a small business. ")+
+      "\n\nThe quiz question: "+q.prompt+(q.scenario?"\nScenario: "+q.scenario:"")+(q.answer?"\nAnswer: "+q.answer:"")+(q.options&&typeof q.correct==="number"?"\nAnswer: "+q.options[q.correct]:"")+(q.explain?"\nContext: "+q.explain:"")+(q.yourNote?"\nHis own note at the time: "+q.yourNote:"")+
+      (prior?"\n\nEarlier in this thread:\n"+prior:"")+"\n\nHis question: "+question;
+    S.sample(p,{modelTier:"default",onText:function(u){out.textContent=u.text}}).then(function(res){out.textContent=res.text;st.explore.push({q:question,a:res.text.slice(0,3000)});b.disabled=false})
+      .catch(function(e){b.disabled=false;out.textContent=e&&e.text?e.text:e&&e.code==="rate_limited"?"Claude's busy. Try again in a minute.":e&&e.code==="not_granted"?"Asking Claude is switched off for this page.":"Couldn't get an answer this time. Try again."});
+  }
+  wrap.append(h("div",{class:"eyebrow"},"Dig deeper"),log,h("div",{class:"row"},inp,b));
+  return wrap;
 }
 function rateBlock(st){
   var q=st.q,wrap=h("div",{class:"opts"});
@@ -408,11 +452,10 @@ function commit(st,rating){
     S.results.answers=(S.results.answers||[]).filter(function(a){return a.qid!==q.id});
     var rec={qid:q.id,type:q.type,section:q.section||"ideas",rating:rating,response:(st.response||"").slice(0,4000),ideaIds:(q.ideas||[]).map(function(i){return i.id}),at:new Date().toISOString()};
     if(st.coach)rec.coach=st.coach.slice(0,2000);
+    if(st.explore&&st.explore.length)rec.explore=st.explore.slice(0,8);
     S.results.answers.push(rec);
-    var done=questions().every(function(x){return answerFor(x.id)});
-    if(done)S.results.finishedAt=new Date().toISOString();
     write("results/"+S.round.id,S.results);
-    (q.ideas||[]).forEach(function(i){
+    if(rating!=="skipped")(q.ideas||[]).forEach(function(i){
       var prev=S.ideas[i.id],ns=nextState(prev,rating,d);
       var hist=(prev&&prev.history?prev.history.slice(-11):[]).concat([{d:d,r:rating,q:q.type}]);
       var doc={id:i.id,title:i.title||(prev&&prev.title)||i.id,note:i.note||(prev&&prev.note)||"",source:i.source||(prev&&prev.source)||"",url:i.url||(prev&&prev.url)||"",section:q.section||"ideas",box:ns.box,due:ns.due,lastSeen:d,history:hist};
@@ -425,14 +468,10 @@ function commit(st,rating){
 function renderSummary(){
   drawBar();metaEl.textContent=(S.round.dateLabel||S.round.id)+" · done";
   stage.textContent="";
-  var qs=questions(),ans=qs.map(function(q){return {q:q,a:answerFor(q.id)}}).filter(function(x){return x.a});
-  var c={got:0,shaky:0,missed:0};ans.forEach(function(x){c[x.a.rating]++});
+  var qs=questions(),ans=qs.map(function(q){return {q:q,a:answerFor(q.id)}}).filter(function(x){return x.a&&x.a.rating!=="skipped"});
+  var c=tally();
   var wrap=h("div",{class:"wrap",style:"gap:20px"});
-  wrap.append(h("section",{class:"card intro"},
-    h("div",{class:"eyebrow"},S.practice?"Practice run, schedule unchanged":"Round "+(S.round.number||"")+" complete"),
-    h("h1",{text:c.missed===0&&ans.length?"Clean round. Nice.":c.got>=c.missed?"Good round. The shaky ones will be back soon.":"Plenty to come back to, which is the point."}),
-    h("div",{class:"stats"},h("span",{class:"stat"},c.got+" got"),h("span",{class:"stat"},c.shaky+" shaky"),h("span",{class:"stat due"},c.missed+" missed")),
-    S.round.nextRound?h("p",{text:"Next round lands "+S.round.nextRound+"."}):null));
+  wrap.append(scoreCard(c));
   if(S.round.thaiTask)wrap.append(renderTask(S.round.thaiTask));
   var seen={},items=[];
   ans.forEach(function(x){(x.q.ideas||[]).forEach(function(i){if(seen[i.id])return;seen[i.id]=1;var s=S.ideas[i.id];if(s)items.push({t:i.title,r:x.a.rating,due:s.due})})});
@@ -440,8 +479,65 @@ function renderSummary(){
     wrap.append(h("section",{class:"card"},h("h3",null,"When each idea comes back"),h("ul",{class:"list"},items.map(function(x){return h("li",null,h("span",null,h("span",{class:"pill "+x.r,text:x.r==="got"?"got it":x.r}),x.t),h("span",{class:"when",text:niceDate(x.due)}))}))));}
   var refl=ans.filter(function(x){return x.q.type==="long"&&x.a.response});
   if(refl.length)wrap.append(h("section",{class:"card"},h("h3",null,"Your thinking this round"),refl.map(function(x){return h("div",{class:"reflect"},h("q",{text:x.q.prompt}),h("p",{text:x.a.response}))})));
+  if(!S.practice)wrap.append(feedbackCard(false));
   wrap.append(h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S.practice=true;go(0)}},"Run through it again (won't change your schedule)")));
   stage.append(wrap);
+}
+function tally(){
+  var c={got:0,shaky:0,missed:0,skipped:0};
+  (S.results.answers||[]).forEach(function(a){if(c[a.rating]!=null)c[a.rating]++});
+  var rated=c.got+c.shaky+c.missed;
+  c.rated=rated;c.score=rated?Math.round((c.got+c.shaky*.5)/rated*100):0;
+  return c;
+}
+function renderSubmit(){
+  drawBar();
+  stage.textContent="";
+  var c=tally();
+  var btn=h("button",{class:"btn",type:"button",onclick:function(){
+    btn.disabled=true;
+    S.results.finishedAt=new Date().toISOString();S.results.score=c.score;S.results.number=S.round.number||null;S.results.counts={got:c.got,shaky:c.shaky,missed:c.missed,skipped:c.skipped};
+    write("results/"+S.round.id,S.results);
+    saveFeedback(fb.querySelector("textarea").value,true);
+    renderSummary();
+  }},"Submit round");
+  var fb=feedbackCard(true);
+  stage.append(h("div",{class:"wrap",style:"gap:20px"},
+    h("section",{class:"card intro"},
+      h("div",{class:"eyebrow"},"Round "+(S.round.number||"")+" · all done"),
+      h("h1",{text:"That's the lot."}),
+      h("div",{class:"stats"},h("span",{class:"stat"},c.rated+" answered"),c.skipped?h("span",{class:"stat"},c.skipped+" skipped"):null),
+      h("p",{text:"Submit to see your score and how it compares with earlier rounds."})),
+    fb,
+    h("div",{class:"row"},btn,h("button",{class:"btn ghost",type:"button",onclick:function(){go(0)}},"Go back"))));
+}
+function scoreCard(c){
+  var card=h("section",{class:"card intro"});
+  card.append(h("div",{class:"eyebrow"},S.practice?"Practice run, schedule unchanged":"Round "+(S.round.number||"")+" · submitted"));
+  var hist=(S.history||[]).slice().sort(function(a,b){return a.roundId<b.roundId?-1:1});
+  var prev=hist.length?hist[hist.length-1]:null;
+  var delta=prev?c.score-prev.score:null;
+  card.append(h("div",{class:"score"},h("span",{class:"big",text:c.score+"%"}),
+    delta==null?h("span",{class:"delta flat",text:"first round, this is your baseline"}):
+    h("span",{class:"delta "+(delta>0?"up":delta<0?"down":"flat"),text:(delta>0?"+":"")+delta+" on last round"})));
+  card.append(h("div",{class:"stats"},h("span",{class:"stat"},c.got+" got"),h("span",{class:"stat"},c.shaky+" shaky"),h("span",{class:"stat due"},c.missed+" missed"),c.skipped?h("span",{class:"stat"},c.skipped+" skipped"):null));
+  var rows=hist.slice(-5).map(function(x){return {label:"Round "+(x.number||"")+" · "+x.roundId.slice(5).replace("-","/"),score:x.score,now:false}});
+  rows.push({label:"Round "+(S.round.number||"")+" · now",score:c.score,now:true});
+  if(rows.length>1)card.append(h("div",{class:"hist"},rows.map(function(r){return h("div",{class:"hrow"+(r.now?" now":"")},h("span",{text:r.label.replace(" · "," ")}),h("div",{class:"track"},h("div",{class:"fill",style:"width:"+r.score+"%"})),h("span",{class:"pct",text:r.score+"%"}))})));
+  card.append(h("p",{class:"hint",style:"margin:0",text:"Score: got it counts 1, shaky counts half. Skipped ones don't count."}));
+  if(S.round.nextRound)card.append(h("p",{text:"Next round lands "+S.round.nextRound+"."}));
+  return card;
+}
+function saveFeedback(text,silent){
+  text=(text||"").trim();if(!text&&!(S.feedback&&S.feedback.text))return;
+  var doc={roundId:S.round.id,number:S.round.number||null,text:text.slice(0,4000),updatedAt:new Date().toISOString()};
+  S.feedback=doc;write("feedback/"+S.round.id,doc);if(!silent)toast("Thanks. The next round will take that on board.");
+}
+function feedbackCard(inSubmit){
+  var ta=h("textarea",{id:"feedback-"+(inSubmit?"a":"b"),placeholder:"What worked, what didn't, what you want more or less of. Anything goes."});
+  ta.value=S.feedback&&S.feedback.text||"";
+  return h("section",{class:"card"},h("h3",null,"Feedback on this round"),h("p",{class:"hint",style:"margin:0",text:"Optional. Every round reads this before it's written, so the quiz keeps shifting toward what you like."}),ta,
+    inSubmit?null:h("div",{class:"row"},h("button",{class:"btn small",type:"button",onclick:function(){saveFeedback(ta.value)}},"Save feedback")));
 }
 function renderTask(t){
   var cb=h("input",{type:"checkbox",id:"thai-done"}),note=h("textarea",{id:"thai-note",placeholder:"How did it go? What did they say back?"});
@@ -474,16 +570,18 @@ function start(){
     return db.doc("meta/current").get().then(function(cur){
       if(!cur.exists){renderEmpty("Your first round is being put together. Check back soon.");return}
       var id=cur.data().roundId;
-      return Promise.all([db.doc("rounds/"+id).get(),db.doc("results/"+id).get(),db.collection("ideas").get()]).then(function(r){
+      return Promise.all([db.doc("rounds/"+id).get(),db.doc("results/"+id).get(),db.collection("ideas").get(),db.collection("results").get(),db.doc("feedback/"+id).get()]).then(function(r){
         if(!r[0].exists){renderEmpty("Today's round didn't save properly. It'll be rebuilt on the next run.");return}
         S.round=r[0].data();
         S.results=r[1].exists?JSON.parse(JSON.stringify(r[1].data())):{roundId:id,startedAt:new Date().toISOString(),answers:[]};
         r[2].docs.forEach(function(d){S.ideas[d.id]=d.data()});
+        S.history=r[3].docs.map(function(d){return d.data()}).filter(function(x){return x&&typeof x.score==="number"&&x.roundId!==id});
+        S.feedback=r[4].exists?r[4].data():null;
         var tk=S.round.thaiTask;
         var p=tk?db.doc("thai/"+tk.id).get().then(function(t){if(t.exists)S.thaiDone=t.data()}):Promise.resolve();
         return p.then(function(){
           var allDone=questions().every(function(q){return answerFor(q.id)});
-          if(allDone)renderSummary();else renderIntro();
+          if(S.results.finishedAt)renderSummary();else if(allDone)renderSubmit();else renderIntro();
         });
       });
     });
