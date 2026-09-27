@@ -135,12 +135,14 @@ minutes. Mix:
   "reassuringly expensive" aspirin; Guidara's 5% next to Sutherland's 20% more
   enjoyable). This is where the best thinking happens.
 - **Two or three "apply it" long answers**, never more, never back to back.
-  Make them about **Tim himself**: his own business TWdigital (a small digital
-  marketing agency he runs solo: his offers, pricing, content, getting
-  clients, how he works), or his life (he lives in Chiang Mai, is into
-  breathwork, meditation, journalling, the gym and guitar, and wants to meet new
-  people). Don't ask what he'd do with a client's budget; he doesn't control
-  those.
+  Spread them across his own business TWdigital (a small digital marketing
+  agency he runs solo: his offers, pricing, content, getting clients, how he
+  works), his client work (Carrick Winery, Croplands, Coolshrub, Calm Mind
+  Rebellion and others), and his life (he lives in Chiang Mai, is into
+  breathwork, meditation, journalling, the gym and guitar, and wants to meet
+  new people). For clients, ask about things he actually controls: the
+  creative, the messaging, the offer he recommends, the landing page, how he
+  reports. Not how he'd spend their money.
 
 Where Tim wrote his own reaction to a highlight (italics in book notes, yellow
 highlights in Life Insights), put it in `yourNote` so he sees what he thought
@@ -158,6 +160,9 @@ Question types the page supports:
 | `cloze` | One missing word or phrase. Put `___` in `prompt` | `answer`, `accept` (other spellings) |
 | `match` | 4 or 5 pairs: idea to real-life example, concept to what it means, cause to effect, Thai to English. Never quote to author | `pairs` [[left, right], ...] |
 | `order` | A real sequence: a playbook, a process, steps in a story | `items` in the correct order (page shuffles) |
+| `sort` | Put 4 to 6 items into 2 or 3 buckets: "qualify or educate?", "perception or reality?", "position or trajectory?" | `buckets` [names], `items` [[text, bucketIndex], ...] |
+| `multi` | Pick all that apply (4 to 6 options, 2 to 4 right) | `options`, `correct` [indexes] |
+| `estimate` | Guess a number from the notes on a slider: a stat, a percentage, a price | `min`, `max`, `step`, `answer`, `tolerance` (counts as right within this), optional `unit` ("%"), `prefix` ("$") |
 
 Every question also has: `kind: "q"`, a unique `id` within the round (`q1`...,
 Thai `t1`...), `section` (`ideas` or `thai`), a short `label` eyebrow ("Recall",
@@ -177,7 +182,11 @@ is the Notion page link.
 Writing well:
 
 - **Vary the angle and the format.** He likes the interactive ones (match,
-  order, fill the gap), so use plenty and keep mixing. Don't make every question
+  order, sort, pick all, the slider, fill the gap) and he likes the mix, so use
+  every type across a round and don't lean on any one. Be creative inside the
+  types too: a "spot the odd one out" MCQ, a sort that pits two books against
+  each other, an estimate that makes a number stick, a match of idea to a
+  moment from his own week. Don't make every question
   "what did X say about Y". Use scenarios from his own life and business ("A
   lead has been on three calls with you and still hasn't bought. Which of the
   two problems is it?"), predictions ("what happened to close rates?"),
@@ -263,8 +272,10 @@ complete real round.
 ### 8. Save it
 
 Write the round to a JSON file first and check it parses (`python3 -m json.tool`).
-Check every `mcq` has a valid `correct` index, every `cloze` prompt contains
-`___`, and question ids are unique. Then one `ArtifactData` `batch` on the page
+Check every `mcq` has a valid `correct` index, every `multi` has valid
+`correct` indexes, every `sort` item points at a real bucket, every `estimate`
+answer sits between `min` and `max`, every `cloze` prompt contains `___`, and
+question ids are unique. Then one `ArtifactData` `batch` on the page
 URL:
 
 1. `set` `rounds/<today>` from the file (`file_path`).

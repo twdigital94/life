@@ -154,6 +154,23 @@ h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:up
 .reflect q{font-family:var(--serif);font-size:17px;quotes:none}
 .reflect p{margin:0;white-space:pre-wrap}
 .empty{text-align:center;color:var(--ink-soft)}
+.sortlist{display:flex;flex-direction:column;gap:10px}
+.sitem{background:var(--paper);border:1.5px solid var(--rule);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.sitem.ok{border-color:var(--got);background:var(--got-soft)}.sitem.no{border-color:var(--miss);background:var(--miss-soft)}
+.sitem .t{line-height:1.35}
+.buckets{display:flex;gap:6px;flex-wrap:wrap}
+.buckets button{border:1.5px solid var(--rule);background:var(--card);border-radius:999px;padding:5px 12px;font-size:14px}
+.buckets button.on{border-color:var(--ink);background:var(--hl-soft);font-weight:700}
+.sitem .fix{font-size:13px;color:var(--miss)}
+.opt.on{border-color:var(--ink);background:var(--hl-soft)}
+.opt.missedright{border-color:var(--got);border-style:dashed}
+.est{display:flex;flex-direction:column;gap:10px}
+.est .val{font-family:var(--serif);font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.est input[type=range]{width:100%;accent-color:var(--teal)}
+.est .scale{position:relative;height:28px;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
+.est .scale span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.est .scale .you{color:var(--ink);font-weight:600}.est .scale .truth{color:var(--got);font-weight:600;top:14px}
+.est .ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--ink-faint)}
 .bar span.r-skipped{background:transparent;border:1px dashed var(--ink-faint)}
 .qfoot{display:flex;justify-content:flex-end}
 .linkbtn{background:none;border:0;color:var(--ink-faint);font-size:14px;text-decoration:underline;text-underline-offset:3px;padding:4px 0}
@@ -300,7 +317,7 @@ function renderQuestion(q){
   if(q.type!=="cloze")card.append(h("h2",{class:"prompt",text:q.prompt}));
   if(q.thai){var tr=h("div",{class:"row"},h("span",{class:"thaiscript",lang:"th",text:q.thai}),speakBtn(q.speak||q.thai));card.append(tr)}
   var body=h("div");card.append(body);
-  ({mcq:mcq,short:freeText,long:freeText,cloze:cloze,match:match,order:order}[q.type]||freeText)(st,body);
+  ({mcq:mcq,short:freeText,long:freeText,cloze:cloze,match:match,order:order,sort:sortQ,multi:multi,estimate:estimate}[q.type]||freeText)(st,body);
   st.foot=h("div",{class:"qfoot"},h("button",{class:"linkbtn",type:"button",onclick:function(){commit(st,"skipped")}},"Skip this one"));
   card.append(st.foot);
   return card;
@@ -384,12 +401,59 @@ function order(st,body){
   body.append(ol,h("div",{class:"row"},btn));
 }
 
+function sortQ(st,body){
+  var q=st.q,items=shuffle(q.items.map(function(x,i){return {t:x[0],b:x[1],i:i,pick:null}}));
+  var list=h("div",{class:"sortlist"}),btn;
+  items.forEach(function(x){
+    var bs=h("div",{class:"buckets"});
+    q.buckets.forEach(function(name,bi){bs.append(h("button",{type:"button",onclick:function(){if(st.revealed)return;x.pick=bi;bs.querySelectorAll("button").forEach(function(el,k){el.classList.toggle("on",k===bi)});btn.disabled=items.some(function(y){return y.pick===null})}},name))});
+    x.el=h("div",{class:"sitem"},h("span",{class:"t",text:x.t}),bs);list.append(x.el);
+  });
+  btn=h("button",{class:"btn",type:"button",disabled:true,onclick:function(){
+    btn.hidden=true;var right=0;
+    items.forEach(function(x){var ok=x.pick===x.b;if(ok)right++;x.el.classList.add(ok?"ok":"no");if(!ok)x.el.append(h("span",{class:"fix",text:"Belongs in: "+q.buckets[x.b]}))});
+    st.response=items.map(function(x){return x.t+" → "+q.buckets[x.pick]}).join("; ");
+    var n=items.length;reveal(st,right===n?"got":right>=n*0.6?"shaky":"missed",right===n?"All sorted.":right+" of "+n+" in the right place.");
+  }},"Check");
+  body.append(h("p",{class:"hint",text:"Tap where each one belongs."}),list,h("div",{class:"row"},btn));
+}
+function multi(st,body){
+  var q=st.q,box=h("div",{class:"opts"}),picked={},btn;
+  var opts=q.options.map(function(o,i){return {o:o,i:i}});if(q.shuffle!==false)opts=shuffle(opts);
+  opts.forEach(function(x){var b=h("button",{class:"opt",type:"button",onclick:function(){if(st.revealed)return;picked[x.i]=!picked[x.i];b.classList.toggle("on",!!picked[x.i])}},x.o);b.dataset.i=x.i;box.append(b)});
+  btn=h("button",{class:"btn",type:"button",onclick:function(){
+    btn.hidden=true;var right=0,wrong=0,n=q.correct.length;
+    box.querySelectorAll(".opt").forEach(function(el){var i=+el.dataset.i,should=q.correct.indexOf(i)>-1,did=!!picked[i];el.disabled=true;el.classList.remove("on");
+      if(should&&did){el.classList.add("right");right++}else if(!should&&did){el.classList.add("wrong");wrong++}else if(should){el.classList.add("missedright")}else el.classList.add("faded")});
+    st.response=q.options.filter(function(o,i){return picked[i]}).join("; ");
+    var perfect=right===n&&wrong===0;
+    reveal(st,perfect?"got":right-wrong>=n/2?"shaky":"missed",perfect?"Got every one.":right+" of "+n+" found"+(wrong?", "+wrong+" that don't belong":"")+". Dashed ones were the ones you missed.");
+  }},"Check");
+  body.append(h("p",{class:"hint",text:"Pick all that apply."}),box,h("div",{class:"row"},btn));
+}
+function estimate(st,body){
+  var q=st.q,min=q.min,max=q.max,step=q.step||1,unit=q.unit||"";
+  var mid=Math.round(((min+max)/2)/step)*step;
+  function fmt(v){return (q.prefix||"")+(+v).toLocaleString()+unit}
+  var val=h("div",{class:"val",text:fmt(mid)});
+  var r=h("input",{type:"range",id:"est-"+q.id,min:min,max:max,step:step,value:mid,"aria-label":"Your estimate"});
+  r.addEventListener("input",function(){val.textContent=fmt(r.value)});
+  var scale=h("div",{class:"scale",hidden:true});
+  var btn=h("button",{class:"btn",type:"button",onclick:function(){
+    btn.hidden=true;r.disabled=true;var v=+r.value,tol=q.tolerance!=null?q.tolerance:(max-min)*0.08,off=Math.abs(v-q.answer);
+    function pos(x){return ((x-min)/(max-min)*100)+"%"}
+    scale.hidden=false;scale.append(h("span",{class:"you",style:"left:"+pos(v),text:"▲ you"}),h("span",{class:"truth",style:"left:"+pos(q.answer),text:"▲ "+fmt(q.answer)}));
+    st.response=fmt(v);
+    reveal(st,off<=tol?"got":off<=tol*2?"shaky":"missed",off<=tol?"Close enough to count.":off<=tol*2?"In the neighbourhood.":"Way off, which makes it memorable.");
+  }},"Lock it in");
+  body.append(h("div",{class:"est"},val,r,h("div",{class:"ends"},h("span",{text:fmt(min)}),h("span",{text:fmt(max)})),scale),h("div",{class:"row"},btn));
+}
 function reveal(st,suggest,verdict){
   var q=st.q;st.revealed=true;st.suggest=suggest;
   var r=h("div",{class:"reveal"});
   if(verdict)r.append(h("div",{class:"verdict "+suggest,text:verdict}));
   if(q.type==="order")r.append(h("div",{class:"answer"},h("b",null,"The order"),q.items.map(function(t,k){return h("div",{text:(k+1)+". "+t})})));
-  else if(q.answer&&q.type!=="mcq")r.append(h("div",{class:"answer"},h("b",null,q.type==="long"?"The idea":"Answer"),h("div",{text:q.answer})));
+  else if(q.answer!=null&&["mcq","estimate","multi","sort"].indexOf(q.type)<0)r.append(h("div",{class:"answer"},h("b",null,q.type==="long"?"The idea":"Answer"),h("div",{text:q.answer})));
   if(q.speak&&!q.thai)r.append(h("div",{class:"row"},h("span",{class:"thaiscript",lang:"th",text:q.speak}),speakBtn(q.speak)));
   if(q.explain)r.append(h("p",{style:"margin:0",text:q.explain}));
   if(q.yourNote)r.append(h("div",{class:"yournote"},h("span",null,"What you wrote at the time"),q.yourNote));
