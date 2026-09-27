@@ -1,0 +1,449 @@
+{
+ "id": "2026-09-27",
+ "number": 1,
+ "dateLabel": "Sun 27 Sep",
+ "headline": "Price, perception and the 5% you spend foolishly",
+ "intro": "First round. Hormozi, Alchemy and Unreasonable Hospitality do most of the talking, with a bit of future-you, then Thai for the street stall.",
+ "minutes": 10,
+ "nextRound": "Tuesday morning",
+ "items": [
+  {
+   "kind": "q",
+   "id": "q1",
+   "type": "mcq",
+   "section": "ideas",
+   "label": "Recall",
+   "ideas": [
+    {
+     "id": "hormozi-price-is-a-signal",
+     "title": "Price is a signal",
+     "source": "Hormozi",
+     "url": "https://app.notion.com/p/37b2072f71a5804f959fdbab42b5c726",
+     "note": "Price high"
+    }
+   ],
+   "prompt": "Hormozi pushed an underpriced health company to raise its price by 50%. What happened to their close rate?",
+   "options": [
+    "It dropped, but profit per sale made up for it",
+    "It went up, because the old price made people doubt it worked",
+    "It stayed flat, so the extra margin was pure profit",
+    "It went up, because the sales team was paid more commission"
+   ],
+   "correct": 1,
+   "explain": "Price is a signal. When the price says 'budget option', the right buyers tune out before you pitch. The only thing worse than selling a $1,000 thing to a $100 buyer is selling a $100 thing to a $1,000 buyer."
+  },
+  {
+   "kind": "q",
+   "id": "q2",
+   "type": "match",
+   "section": "ideas",
+   "label": "Who said it",
+   "ideas": [
+    {
+     "id": "guidara-luxury-vs-thoughtful",
+     "title": "Hospitality is thoughtfulness, not luxury",
+     "source": "Will Guidara",
+     "url": "https://app.notion.com/p/2fc2072f71a5806483bcc56e7151b46c",
+     "note": "Unreasonable Hospitality"
+    },
+    {
+     "id": "godin-consistency-over-authenticity",
+     "title": "Consistency beats authenticity",
+     "source": "Seth Godin",
+     "url": "https://app.notion.com/p/3722072f71a5800a97aad6f1e7489068",
+     "note": "Seth Godin Pod"
+    },
+    {
+     "id": "naval-trajectory-over-position",
+     "title": "Trajectory over position",
+     "source": "Naval",
+     "url": "https://app.notion.com/p/3602072f71a580fda165d793c748a14e",
+     "note": "Life Insights"
+    },
+    {
+     "id": "williamson-story-of-decisions",
+     "title": "You live with the story of a decision",
+     "source": "Chris Williamson",
+     "url": "https://app.notion.com/p/34c2072f71a580b9acebed471552d948",
+     "note": "What would you tomorrow want you today to do?"
+    },
+    {
+     "id": "sutherland-perception-is-cheap",
+     "title": "Perception is cheaper than reality",
+     "source": "Rory Sutherland",
+     "url": "https://app.notion.com/p/2fc2072f71a5801c8ad8d4561909047a",
+     "note": "Alchemy"
+    }
+   ],
+   "prompt": "Match each line to the person it came from.",
+   "pairs": [
+    [
+     "Luxury means just giving more; hospitality means being more thoughtful.",
+     "Will Guidara"
+    ],
+    [
+     "Consistency beats authenticity.",
+     "Seth Godin"
+    ],
+    [
+     "Trajectory is preferable to position.",
+     "Naval"
+    ],
+    [
+     "You live with the story of your decisions far longer than their impact.",
+     "Chris Williamson"
+    ],
+    [
+     "Big improvements in perception cost a fraction of the same improvement in reality.",
+     "Rory Sutherland"
+    ]
+   ],
+   "explain": "Five sources, one thread: how something feels and where it's heading matters more than the raw facts of it."
+  },
+  {
+   "kind": "q",
+   "id": "q3",
+   "type": "short",
+   "section": "ideas",
+   "label": "Recall",
+   "ideas": [
+    {
+     "id": "hormozi-qualify-or-educate",
+     "title": "Not buying? Qualify or educate",
+     "source": "Hormozi",
+     "url": "https://app.notion.com/p/3d82072f71a5803c830cd154d68496f0",
+     "note": "What to do when leads aren't buying"
+    }
+   ],
+   "prompt": "Leads are turning up but not buying. Hormozi says it's one of two problems. What are they, and what's the fix for each?",
+   "answer": "Either they don't meet the criteria to buy (fix: tighter qualification, and tell the lead source 'more like these good ones'), or they don't want it enough yet (fix: more education, like a VSL before the call, a video while they wait, proof to consume).",
+   "explain": "His line: if they're there, educate, which is to say sell. The Boulder park VSL ended up being the best thing on the page and the best ad."
+  },
+  {
+   "kind": "quote",
+   "text": "Trust grows at the speed of a coconut tree and falls at the speed of a coconut.",
+   "mark": "falls at the speed of a coconut",
+   "by": "Rory Sutherland, Alchemy"
+  },
+  {
+   "kind": "q",
+   "id": "q4",
+   "type": "long",
+   "section": "ideas",
+   "label": "Apply it · two books, one move",
+   "ideas": [
+    {
+     "id": "sutherland-psychological-moonshots",
+     "title": "20% more enjoyable for almost nothing",
+     "source": "Rory Sutherland",
+     "url": "https://app.notion.com/p/2fc2072f71a5801c8ad8d4561909047a",
+     "note": "Alchemy"
+    },
+    {
+     "id": "guidara-95-5-rule",
+     "title": "Spend the last 5% foolishly",
+     "source": "Will Guidara",
+     "url": "https://app.notion.com/p/2fc2072f71a5806483bcc56e7151b46c",
+     "note": "Unreasonable Hospitality"
+    }
+   ],
+   "scenario": "Rory Sutherland: making a train 20% faster costs hundreds of millions, making it 20% more enjoyable costs almost nothing. Will Guidara: manage 95% of the business to the penny, spend the last 5% 'foolishly'.",
+   "prompt": "Pick one client. What's the 5% you'd spend foolishly to make their customer's experience 20% better? Be specific about the moment it lands.",
+   "answer": "Cheap, personal, visible gestures at a moment that matters beat bigger spend. Guidara's $2 hot dog beat caviar because only that table could have got it. Endings count double: a gracious gesture at the end can outweigh everything before it.",
+   "yourNote": "What are some low cost ways I could make the experience of my clients' products 20% more enjoyable? Sending a joke along with the packaging. Or even a personalised thank you."
+  },
+  {
+   "kind": "q",
+   "id": "q5",
+   "type": "order",
+   "section": "ideas",
+   "label": "Put it in order",
+   "ideas": [
+    {
+     "id": "hormozi-boulder-giveaway",
+     "title": "The giveaway cash rescue",
+     "source": "Hormozi",
+     "url": "https://app.notion.com/p/3da2072f71a58105baf0ff6c66e73889",
+     "note": "Boulder Adventure Park playbook"
+    }
+   ],
+   "prompt": "The theme park was weeks from going under. Put Hormozi's cash rescue in the order he ran it.",
+   "items": [
+    "Launch a 7 to 10 day giveaway (win the whole summer free)",
+    "Hammer the list with email and ads while the countdown runs",
+    "Phone every lead that came in",
+    "Move the non-winners onto the standard summer offer",
+    "Run the same play again for a new occasion (birthday parties)"
+   ],
+   "explain": "Cash was the constraint, so: leads, then sell the leads, then let the cash fund capacity. 3,700 leads and a 325% jump in camp sales. Then the bottleneck moved to sales staff, not lead flow."
+  },
+  {
+   "kind": "q",
+   "id": "q6",
+   "type": "cloze",
+   "section": "ideas",
+   "label": "Fill the gap",
+   "ideas": [
+    {
+     "id": "hormozi-trust-next-to-action",
+     "title": "Trust goes next to the button",
+     "source": "Hormozi",
+     "url": "https://app.notion.com/p/3da2072f71a58105baf0ff6c66e73889",
+     "note": "Boulder Adventure Park playbook"
+    }
+   ],
+   "prompt": "On the park's landing page, the parent ratings were moved. The rule: trust belongs next to the ___, not somewhere else on the page.",
+   "answer": "action",
+   "accept": [
+    "button",
+    "cta",
+    "call to action",
+    "call-to-action",
+    "buy button",
+    "action button"
+   ],
+   "explain": "Put the proof right where the doubt happens, at the button. Same page: four banners cut to one, and a specific stat ('zero falls last year') instead of a vague safety claim."
+  },
+  {
+   "kind": "q",
+   "id": "q7",
+   "type": "mcq",
+   "section": "ideas",
+   "label": "Recall",
+   "ideas": [
+    {
+     "id": "godin-give-them-status",
+     "title": "Give customers something to say",
+     "source": "Seth Godin",
+     "url": "https://app.notion.com/p/3722072f71a5800a97aad6f1e7489068",
+     "note": "Seth Godin Pod"
+    }
+   ],
+   "prompt": "Seth Godin says word spreads because customers talk about you. What makes them actually do it?",
+   "options": [
+    "You post often enough that you stay front of mind",
+    "You give them something to say that helps them or raises their status",
+    "You ask every happy customer for a review",
+    "You're more authentic than the competition"
+   ],
+   "correct": 1,
+   "explain": "Marketing is creating the conditions for other people to spread your idea. Also from that episode: AI should make your thing better, not just cheaper. You can't cost-reduce yourself to greatness."
+  },
+  {
+   "kind": "q",
+   "id": "q8",
+   "type": "long",
+   "section": "ideas",
+   "label": "Apply it · your life",
+   "ideas": [
+    {
+     "id": "williamson-tomorrow-you",
+     "title": "What would tomorrow-you want?",
+     "source": "Chris Williamson",
+     "url": "https://app.notion.com/p/34c2072f71a580b9acebed471552d948",
+     "note": "What would you tomorrow want you today to do?"
+    },
+    {
+     "id": "collins-50-percent-savings",
+     "title": "The 50% savings rate",
+     "source": "JL Collins",
+     "url": "https://app.notion.com/p/37c2072f71a580708f4bf74afe99a5f1",
+     "note": "50% Savings Rate"
+    }
+   ],
+   "scenario": "JL Collins: if your lifestyle rises with your income, you're not free. Chris Williamson: ask 'what would tomorrow-you want today-you to do?'",
+   "prompt": "What savings rate does JL Collins aim for? Then name one money or time decision coming up this week where both ideas point the same way, and what you'll do.",
+   "answer": "50%, and the keenest go for 70 to 80%. Lifestyle creep is the real golden handcuffs; every dollar not spent buys future-you freedom. Williamson's test pulls you out of the moment so you decide for yourself in 24 hours, 24 days and 24 months."
+  },
+  {
+   "kind": "quote",
+   "text": "Inspiration is perishable. Act on it immediately.",
+   "mark": "perishable",
+   "by": "Naval"
+  },
+  {
+   "kind": "q",
+   "id": "q9",
+   "type": "mcq",
+   "section": "ideas",
+   "label": "Recall",
+   "ideas": [
+    {
+     "id": "sutherland-night-nurse-reframe",
+     "title": "Night Nurse: flaw into feature",
+     "source": "Rory Sutherland",
+     "url": "https://app.notion.com/p/2fc2072f71a5801c8ad8d4561909047a",
+     "note": "Alchemy"
+    }
+   ],
+   "prompt": "Night Nurse's scientists nearly scrapped their cold and flu formula. What saved it?",
+   "options": [
+    "They cut the dose until the side effects went away",
+    "Marketing turned the drowsiness into the selling point: a night-time remedy",
+    "They sold it at a premium so people trusted it more",
+    "They put it in a smaller bottle so it felt stronger"
+   ],
+   "correct": 1,
+   "explain": "A masterclass in reframing: the flaw became the feature. The two wrong answers that sound plausible are also Alchemy ideas (reassuringly expensive aspirin, Red Bull's small can)."
+  },
+  {
+   "kind": "q",
+   "id": "t1",
+   "type": "match",
+   "section": "thai",
+   "label": "Thai · from your notes",
+   "ideas": [
+    {
+     "id": "thai-khor",
+     "title": "Khor (can I have)",
+     "source": "Learning Thai",
+     "url": "https://app.notion.com/p/3e82072f71a58071a70bd94c73151a93",
+     "note": "Learning Thai"
+    },
+    {
+     "id": "thai-mai-ow",
+     "title": "Mai ow (no thanks)",
+     "source": "Learning Thai",
+     "url": "https://app.notion.com/p/3e82072f71a58071a70bd94c73151a93",
+     "note": "Learning Thai"
+    },
+    {
+     "id": "thai-nam-khaeng",
+     "title": "Nam khaeng (ice)",
+     "source": "Learning Thai",
+     "url": "https://app.notion.com/p/3e82072f71a58071a70bd94c73151a93",
+     "note": "Learning Thai"
+    },
+    {
+     "id": "thai-tung",
+     "title": "Tung (bag)",
+     "source": "Learning Thai",
+     "url": "https://app.notion.com/p/3e82072f71a58071a70bd94c73151a93",
+     "note": "Learning Thai"
+    },
+    {
+     "id": "thai-hiu",
+     "title": "Hiu (hungry)",
+     "source": "Learning Thai",
+     "url": "https://app.notion.com/p/3e82072f71a58071a70bd94c73151a93",
+     "note": "Learning Thai"
+    }
+   ],
+   "prompt": "Match the Thai to the English.",
+   "pairs": [
+    [
+     "Khor",
+     "Can I have"
+    ],
+    [
+     "Mai ow",
+     "I don't want it / no thanks"
+    ],
+    [
+     "Nam khaeng",
+     "Ice"
+    ],
+    [
+     "Tung",
+     "Bag"
+    ],
+    [
+     "Hiu",
+     "Hungry"
+    ]
+   ],
+   "explain": "Your note says nam khaeng is 'water with ice'. Strictly it's ice itself, so 'khor nam khaeng' gets you a glass of ice. Plain drinking water is 'nam plao'. And mai ow takes a falling tone, not the rising 'mai' of a question."
+  },
+  {
+   "kind": "q",
+   "id": "t2",
+   "type": "cloze",
+   "section": "thai",
+   "label": "Thai · from the course",
+   "ideas": [
+    {
+     "id": "thai-speak-slowly",
+     "title": "Chuay puut chaa chaa",
+     "source": "Thai Language School",
+     "url": "https://app.notion.com/p/3e82072f71a580219900f66ed9bc55ac",
+     "note": "Thai Language School"
+    }
+   ],
+   "prompt": "Could you please speak slowly? Chuay puut ___ noy krab.",
+   "thai": "ช่วยพูดช้าๆ หน่อยครับ",
+   "answer": "chaa chaa",
+   "accept": [
+    "cha cha",
+    "chaachaa",
+    "chacha",
+    "chaa-chaa"
+   ],
+   "explain": "Chuay (said 'shoy') is 'could you', chaa chaa is 'slowly'. Its twin: chuay puut eek krang noy krab, 'could you say that again?'"
+  },
+  {
+   "kind": "q",
+   "id": "t3",
+   "type": "mcq",
+   "section": "thai",
+   "label": "Thai · from the course",
+   "ideas": [
+    {
+     "id": "thai-tao-rai",
+     "title": "Nee tao rai (how much)",
+     "source": "Thai Language School",
+     "url": "https://app.notion.com/p/3e82072f71a580219900f66ed9bc55ac",
+     "note": "Thai Language School"
+    }
+   ],
+   "prompt": "You point at something on the stall and say \"Nee tao rai krab?\" What have you asked?",
+   "thai": "นี่เท่าไหร่ครับ",
+   "options": [
+    "How much is this?",
+    "What is this?",
+    "Whose is this?",
+    "Where is this?"
+   ],
+   "correct": 0,
+   "explain": "Tao rai is 'how much'. The others, from your Lesson 4 and 5 notes: Nee a-rai (what is this), Nee khorng khrai (whose is this), yuu teenai (where is it). Swap nee for nan to ask about 'that'."
+  },
+  {
+   "kind": "q",
+   "id": "t4",
+   "type": "short",
+   "section": "thai",
+   "label": "Thai · say it",
+   "ideas": [
+    {
+     "id": "thai-speak-a-little",
+     "title": "Pom phuut paa-saa Thai nit noi",
+     "source": "Learning Thai",
+     "url": "https://app.notion.com/p/3e82072f71a58071a70bd94c73151a93",
+     "note": "Learning Thai"
+    }
+   ],
+   "prompt": "How do you say \"I speak a little Thai\"? Type it how it sounds.",
+   "answer": "Pom phuut paa-saa Thai (dai) nit noi krab",
+   "thai": null,
+   "speak": "ผมพูดภาษาไทยได้นิดหน่อยครับ",
+   "explain": "Your teacher Sassi's tip: say it slowly. If you rush, people assume you're a foreigner speaking English and don't hear the Thai. Adding 'dai' (can) is optional and a touch more natural."
+  }
+ ],
+ "thaiTask": {
+  "id": "2026-09-27",
+  "title": "Order a whole meal at a street stall in Thai, start to finish",
+  "phrase": {
+   "roman": "Chok dee na krab",
+   "thai": "โชคดีนะครับ",
+   "meaning": "Literally 'good luck', used like 'have a good one' when you leave."
+  },
+  "where": "Any khao man gai or noodle stall, or the smoothie cart near your place. Somewhere you'll go back to, so they start to recognise you.",
+  "steps": [
+   "Open with \"Sawatdee krab\".",
+   "Order with a plate count: \"Khor khao man gai neung jan krab\" (one plate of chicken rice).",
+   "If they come back at you fast: \"Pom phuut paa-saa Thai nit noi. Chuay puut chaa chaa noy krab.\"",
+   "Pay with \"Tao rai krab?\" and leave with \"Khop khun krab, chok dee na krab.\"",
+   "Do it at three different stalls before the next task lands."
+  ],
+  "stretch": "Ask the owner \"Bpen yang rai baang krab?\" (how's it going?) and see how far you get."
+ }
+}

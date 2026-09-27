@@ -110,3 +110,34 @@ Ask in any session with Otter and Notion connected:
 
 The skill is idempotent, so running it by hand is safe even if the nightly run
 already went through.
+
+## Second Pass (recall quiz)
+
+Tim takes notes from books, podcasts and newsletters and rarely goes back to
+them. **Second Pass** is a 10 minute quiz every second morning, built from those
+notes, so the ideas actually stick. Missed ideas come back in 2 days, then a
+week, then further out. The last few questions are Thai, plus a small Thai task
+for the week out in the real world.
+
+| | |
+|---|---|
+| Quiz page | https://claude.ai/artifact/7gyNY5a7bgoMmCxtPJpX15 |
+| Schedule | Every second day, 06:52 Asia/Bangkok (Routine "Second Pass quiz round") |
+| Sources | Marketing Insights, Books, Life Insights (+ emails), Learning Thai, Thai Language School |
+| Logic | The Routine prompt (self-contained). [`SKILL.md`](.claude/skills/recall-quiz/SKILL.md) mirrors it for manual runs |
+| Page | [`second-pass.html`](.claude/skills/recall-quiz/assets/second-pass.html), published once |
+| Memory | The quiz page's own database: rounds, answers, and when each idea is next due |
+
+**How it works.** The page does the quizzing, marking and scheduling. The
+Routine only reads Notion and the page's saved answers, writes the next round
+into the page's database, and points the page at it. It never republishes the
+page and never commits to this repo, for the same reason as the journal: runs
+that depend on this repo have failed before.
+
+**Setup, one manual step.** Like the journal Routine, this one needs the
+**Notion** connector attached in the Routines UI on claude.ai (open *Second Pass
+quiz round*, add Notion). Without it the run can't read the notes and the
+previous round simply stays on the page.
+
+**By hand.** In any session with Notion connected, say "quiz me" or "new quiz
+round". If today's round already exists it leaves it alone unless asked.
